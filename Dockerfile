@@ -8,7 +8,7 @@ ARG BASE_IMAGE=debian:13-slim
 
 FROM $BASE_IMAGE
 
-LABEL org.opencontainers.image.source https://github.com/travisghansen/argo-cd-helmfile
+LABEL org.opencontainers.image.source=https://github.com/atefhaloui/argo-cd-helmfile
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ARGOCD_USER_ID=999
@@ -101,7 +101,7 @@ ARG KUBECTL_VERSION="v1.35.2"
 # https://github.com/kubernetes-sigs/krew/releases/
 ARG KREW_VERSION="v0.5.0"
 # https://github.com/helmfile/vals/releases/
-ARG VALS_VERSION="v0.43.7"
+ARG VALS_VERSION="0.43.7"
 
 # wget -qO "/usr/local/bin/jq"       "https://github.com/stedolan/jq/releases/download/jq-${JQ_VERSION}/jq-linux64" && \
 RUN \
@@ -116,7 +116,7 @@ RUN \
   wget -qO-                          "https://github.com/kubernetes-sigs/krew/releases/download/${KREW_VERSION}/krew-linux_${GO_ARCH}.tar.gz" | tar zxv -C /tmp ./krew-linux_${GO_ARCH} && mv /tmp/krew-linux_${GO_ARCH} /usr/local/bin/kubectl-krew && \
   wget -qO-                          "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-${GO_ARCH}.tar.gz" | tar zxv -C /usr/local/bin kubeseal && \
   wget -qO-                          "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE5_VERSION}/kustomize_v${KUSTOMIZE5_VERSION}_linux_${GO_ARCH}.tar.gz" | tar zxv -C /usr/local/bin kustomize && \
-  wget -qO-                          "https://github.com/helmfile/vals/releases/download/${VALS_VERSION}/vals-${VALS_VERSION}-linux-${GO_ARCH}.tar.gz" | tar zxv -C /usr/local/bin vals && \
+  wget -qO-                          "https://github.com/helmfile/vals/releases/download/v${VALS_VERSION}/vals_${VALS_VERSION}_linux_${GO_ARCH}.tar.gz" | tar zxv -C /usr/local/bin vals && \
   true
 
 COPY src/*.sh /usr/local/bin/
@@ -152,10 +152,12 @@ ARG HELM_GIT_VERSION="1.5.2"
 # https://github.com/jkroepke/helm-secrets/releases
 ARG HELM_SECRETS_VERSION="4.7.5"
 
+# Helm 4 requires plugin verification by default. Since these plugins do not yet provide provenance artifacts,
+# you need to use the --verify=false flag
 RUN \
-  helm-v3 plugin install https://github.com/databus23/helm-diff   --version ${HELM_DIFF_VERSION} && \
-  helm-v3 plugin install https://github.com/aslafy-z/helm-git     --version ${HELM_GIT_VERSION} && \
-  helm-v3 plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION} && \
+  helm-v3 plugin install https://github.com/databus23/helm-diff   --version ${HELM_DIFF_VERSION}    --verify=false && \
+  helm-v3 plugin install https://github.com/aslafy-z/helm-git     --version ${HELM_GIT_VERSION}     --verify=false && \
+  helm-v3 plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION} --verify=false && \
   kubectl krew update && \
   mkdir -p ${KREW_ROOT}/bin && \
   true
