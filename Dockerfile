@@ -100,6 +100,8 @@ ARG KUBESEAL_VERSION="0.36.1"
 ARG KUBECTL_VERSION="v1.35.2"
 # https://github.com/kubernetes-sigs/krew/releases/
 ARG KREW_VERSION="v0.5.0"
+# https://github.com/helmfile/vals/releases/
+ARG VALS_VERSION="v0.43.7"
 
 # wget -qO "/usr/local/bin/jq"       "https://github.com/stedolan/jq/releases/download/jq-${JQ_VERSION}/jq-linux64" && \
 RUN \
@@ -114,6 +116,7 @@ RUN \
   wget -qO-                          "https://github.com/kubernetes-sigs/krew/releases/download/${KREW_VERSION}/krew-linux_${GO_ARCH}.tar.gz" | tar zxv -C /tmp ./krew-linux_${GO_ARCH} && mv /tmp/krew-linux_${GO_ARCH} /usr/local/bin/kubectl-krew && \
   wget -qO-                          "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-${GO_ARCH}.tar.gz" | tar zxv -C /usr/local/bin kubeseal && \
   wget -qO-                          "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE5_VERSION}/kustomize_v${KUSTOMIZE5_VERSION}_linux_${GO_ARCH}.tar.gz" | tar zxv -C /usr/local/bin kustomize && \
+  wget -qO-                          "https://github.com/helmfile/vals/releases/download/${VALS_VERSION}/vals-${VALS_VERSION}-linux-${GO_ARCH}.tar.gz" | tar zxv -C /usr/local/bin vals && \
   true
 
 COPY src/*.sh /usr/local/bin/
