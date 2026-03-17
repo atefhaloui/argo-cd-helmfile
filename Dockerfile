@@ -146,11 +146,11 @@ ENV PATH="${KREW_ROOT}/bin:$PATH"
 
 # plugin versions
 # https://github.com/databus23/helm-diff/releases
-ARG HELM_DIFF_VERSION="3.12.2"
+ARG HELM_DIFF_VERSION="v3.15.2"
 # https://github.com/aslafy-z/helm-git/releases
-ARG HELM_GIT_VERSION="1.4.0"
+ARG HELM_GIT_VERSION="1.5.2"
 # https://github.com/jkroepke/helm-secrets/releases
-ARG HELM_SECRETS_VERSION="4.6.5"
+ARG HELM_SECRETS_VERSION="4.7.5"
 
 RUN \
   helm-v3 plugin install https://github.com/databus23/helm-diff   --version ${HELM_DIFF_VERSION} && \
