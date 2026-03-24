@@ -12,7 +12,7 @@ helm="$(which ${HELM_BINARY})"
 
 # helm version
 # these commands should work for both v2 and v3
-helm_full_version=$(${helm} version --short --client | cut -d " " -f2)
+helm_full_version=$(${helm} version --short | cut -d " " -f2)
 helm_major_version=$(echo "${helm_full_version}" | cut -d "." -f1 | sed 's/[^0-9]//g')
 
 # replace init behavior
